@@ -1,36 +1,40 @@
-# 道里名(DaoliName)
+# DaoliName System (DaoliNS)
 
-## 简介
+![DaoliName](images/logoh.png)
 
-道里名系统使用基于身份的公钥密码学技术，结合独创的"可压缩指纹(CF)"技术，允许使用任意Bit字符串做为公钥，如电子邮件地址，IP地址，手机号码等，有效的解决了一些基于传统PKI体系中复杂的身份认证，加密和密钥管理问题。
+## Introduction to DaoliName System (DaoliNS)
 
-## 基本原理
+DaoliName System (DaoliNS) is an “IBC” technology enabled Open Key Management System. Note the quote “IBC”, [this document](DaoliName.pdf) explains the reason.
 
-对于所有可当做身份的Bit字符串，都需要向道里名注册。道里名提供身份注册服务，为所有基于身份的系统和软件提供在线查询服务。
+Like usual IBCs, DaoliNS also needs a PKG (Private Key Generator) to publicize system public parameters: ( P, Q=[*s*]P ) where *s* is the so-called “Master secret key” of PKG.
 
-**声明**
+There are several hundreds of root Certificate Authorities (CAs) certificates out there. For many years they have entered into all OSes, browsers and mobile apps. So DaoliNS at the top buys several certificates from popular root CAs, and have DaoliNS PKG system parameters (P, Q) certificate chain signed, so that they can be accepted by our clients, after download from the DaoliNS website in javascript.
 
-道里名系统中有如下三种角色：
+CA issued certificates are quite commonly used by organizations, in particular by ones who make life out of webs, apps, and fancy services. These organizations are sufficiently resourceful for their CA issued certificates to reach their customers. It must be only because their customers who are ONLINE and pulling the OFFLINE certificates that can make the certificates fly even in lightspeed to the customers of the resourceful CA registrants.
+
+DaoliNS buys certificates from root CAs to chain certify “IBC” root public parameters (P, Q) to enable DomainNS-like online availability of key management services to a mass volume of resource-less users.
+
+Fortunately, unlike IBC (note, not quoted) inherently escrow user private keys, “IBC” enabled online key management service does not do key escrow in the infrastructure precisely the same as the PKI CAs do not do. The [slide deck](DaoliName.pdf) explains the technology like this: Let Alice play the role of PKG2. Collusion with PKG1 to fool herself is not an “do no evil” option for Alice.
+
+Thus, let conventional crypto key management from the conventional PKI CAs continue serving resourceful organizations, to piggyback DaoliNS online crypto key management from “IBC” to commence a retail business serving a mass volume of resource-less, but online, dust users. We also hope that IPv6 addresses should route packets to the dusts too, as both are size compatible.
+
+## 项目介绍
+
+道里名系统使用"基于身份"的公钥密码学技术，结合独创的"可压缩指纹(CF)"技术，允许使用任意Bit字符串做为公钥，如电子邮件地址，IP地址，手机号码等，有效的解决了一些基于传统PKI体系中复杂的密钥管理问题。
+
+道里名在线密钥管理系统提供身份注册服务，为所有基于身份的系统和应用软件提供在线查询服务，对于所有可当做身份的Bit字符串，都可以向道里名系统申请注册。
+
+道里名系统中有如下角色：
 
 * 身份注册系统
 
-身份注册系统由道里名负责管理，为所有用户提供身份注册服务，允许注册任意字符串做为通信身份，道里名注册系统提供密钥生成以及身份查询服务。
+* 发送端签名
 
-* 发送端
+* 发送端加密
 
-发送端需要将自己的身份注册到道里名系统，并且在消息发送前，向道里名系统查询接收端身份的公钥信息，用来签名和加密数据。
+* 接收端解密
 
-* 接收端
-
-接收端需要将自己的身份注册到道里名系统，并且在收到消息时，向道里名系统查询发送端身份的公钥信息，用来解密和验签数据。
-
-**通信流程**
-
-1. 数据发送端用户和接收端用户将各自的身份(邮箱地址，IP地址等)提前在道里名系统中注册，道里名注册系统生成私钥，由用户自己保存到安全系统(或者HSM)；
-2. 通信开始前，由发送端向道里名系统发送请求，通过接收端身份查询接收端公钥信息；
-3. 发送端通过自己的私钥对数据进行加密和签名，将消息发送出去；
-4. 接收端收到发送端的消息后，也向道里名系统发送请求，获取发送端身份的公钥信息；
-5. 接收端对消息进行解密并进行验签，如果验证通过则接收数据，否则丢弃；
+* 接收端验签
 
 ## 应用场景
 
@@ -47,14 +51,14 @@
 
 ## 计划安排
 
-道里名v1版本计划将基于身份的密码技术应用在IPSec系统中，解决传统IPSec复杂的身份认证，加密和签名等问题。IPsec VPN已经在企业和个人中被广泛使用，道里名通过对开源IPsec VPN(libraswan)系统的改进，同时适配多种客户端， 加入基于身份的密码技术，以实现一整套IPSec解决文案。
+道里名v1版本计划实现一套"基于身份"的注册系统，通过实现客户端程序，手机APP或者浏览器插件完成用户身份的注册。同时将基于身份的密码技术应用在IPSec系统中，解决传统IPSec复杂的身份认证，加密和签名等问题。IPsec VPN已经在企业和个人中被广泛使用，道里名通过对开源IPsec VPN(libraswan)系统的改进，同时适配多种客户端，加入基于身份的密码技术，以实现一整套IPSec解决文案。
 
 1. IPSec VPN Server
 2. IPSec for Windows
 3. IPSec for Linux
 4. IPSec for Mac
 5. IPsec for Android
-6. IPSec for IOS
+6. 小程序
 
 ## TODO
 
@@ -62,7 +66,7 @@
 
 ## Useful Links
 
-[DaoliName.pdf](https://tools.ietf.org/html/rfc5091)
+[DaoliName.pdf](DaoliName.pdf)
 
 [ID-based cryptography - wiki](https://en.wikipedia.org/wiki/ID-based_cryptography)
 
